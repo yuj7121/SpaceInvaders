@@ -15,24 +15,25 @@ public class Enemy
     private Console c;          // The output console
     private int x;              //the x coordinate of the enemy
     private int y;              //the y coordinate of the enemy
-    private boolean enemyHit;   //indicates wether enemy is hit by player missile
+    private boolean enemyHit = false; //whether the neemy is hit or not
+    boolean right = true;       //whether enemies should move right or not
+    boolean down = false;       //whether enemies should move down or not
 
     //this is the constructor method.
-    //The console is passes to display output
+    //console c for the console the enemy will be drawn in
+    //int x and y for the coordinates of the enemy
     public Enemy (Console c, int x, int y)
     {
+	//The console is passes to display output
 	this.c = c;
 	this.x = x;
 	this.y = y;
-	if (!enemyHit)
-	{
-	    drawEnemy ();
-	    dropBomb ();
-	}
+	drawEnemy ();
     }
 
 
     //this method will draw the graphics of an enemy
+    //int s fo rthe speed of the enemy
     private void drawEnemy ()
     {
 	c.setColor (Color.black);           //sets colour to black
@@ -57,21 +58,12 @@ public class Enemy
     }
 
 
-    //this method will make the enemy randomly shoot a bomb.
-    private void dropBomb ()
-    {
-	double ran;    //this vriable decides wether to shoot a bomb or not
-	ran = Math.random ();
-	if (ran < 0.1)
-	{
-	    Bomb b = new Bomb (c, x, y);
-	}
-    }
-
-
     //this method check if enemy is hit by player missile
-    private void setEnemyHit (int mx, int my)
+    private void setEnemyHit (Player p)
     {
+	int mx = p.getMissileX ();
+	int my = p.getMissileY ();
+
 	if ((x <= mx && mx <= x + 20) && (y <= my && my <= y + 20))
 	{
 	    enemyHit = true;
@@ -82,10 +74,16 @@ public class Enemy
 	}
     }
 
-
-    //this method will return wether the enemy has been hit or not.
-    public boolean getEnemyHit ()
+    public int getEnemyX ()
     {
-	return enemyHit;
+	return x;
+    }
+
+
+    public int getEnemyY ()
+    {
+	return y;
     }
 } // Enemy class
+
+

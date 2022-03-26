@@ -10,17 +10,15 @@ public class MainMenu
     //this method will create the main menu
     private MainMenu ()
     {
-	c = new Console (24, 60);
-
+	c = new Console (25, 63);
     }
 
 
-    //the main method o fthe whole program
+    //the main method of the whole program
     public static void main (String[] args)
     {
 	MainMenu m = new MainMenu ();
-
-	Level lev1 = new Level (c, 1);
-	// Place your program here.  'c' is the output console
+	GameScreen g = new GameScreen (c);
+ 
     } // main method
 } // MainMenu class
