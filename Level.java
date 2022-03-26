@@ -1,7 +1,7 @@
 /*
 Name Yujin Bae
 teacher: Mr. Guglielmi
-Date:L november, 6, 2020
+Date: november, 6, 2020
 description: This is the level class of the final project space invaders game.
 this class will draw all the enemies and the player, and let the user play a level.
 */
@@ -9,85 +9,66 @@ this class will draw all the enemies and the player, and let the user play a lev
 // The "Level" class.
 import java.awt.*;
 import hsa.Console;
+import java.lang.*;
 
 public class Level
 {
     //variable declaration
-    private Console c;           // The output console
-    private int speed;                  //the speed of the game
-    private int score;                  //this varibale holds the score of the game.
-    private Player p;
-    private Enemy[] enemies;
+    private Console c;                  // The output console
+    private boolean mul;                //whether the game will be multiplayer or not
+    private int s;                      //the speed of the enemies
+    private Player p1;                  //first player object declared
+    private Player p2;                  //second player object declared
+    private boolean levelEnd = false;   //this boolean holds whether the level is finished or not
 
     //this is the constructor of the method.
-    public Level (Console c, int s)
+    public Level (Console c, int s, boolean mul)
     {
 	this.c = c;
-	speed = s;
-	gameScreen();
+	this.s = s;
+	this.mul = mul;
+	joining ();
     }
 
 
-    //this method will draw the enemies, the player, and the clock.
-    private void gameScreen ()
+    //this method will draw the players with the player number provided by the parameter
+    private void drawPlayers ()
     {
-	//draws the enemies!!
-	enemies = new Enemy [30];   //create an array of enemeis
-	for (int i = 0 ; i >= 30 ; i++)
+	if (mul == true)
 	{
-	    if (i <= 10)    //the first row of enemies
-	    {
-		enemies [i] = new Enemy (c, i * 25, 25);
-	    }
-	    else if (i <= 20)   //the second row
-	    {
-		enemies [i] = new Enemy (c, i % 10 * 25, 50);
-	    }
-	    else    //the third row
-	    {
-		enemies [i] = new Enemy (c, i % 10 * 25, 75);
-	    }
+	    p1 = new Player (c, true);
+	    p1.start ();
 
-	} //enemy drawing for loop's end
-
-	//draws the player
-	p = new Player (c);
-	
+	    p2 = new Player (c, false);
+	    p2.start ();
+	}
+	else
+	{
+	    p1 = new Player (c, true);
+	    p1.start ();
+	}
     }
 
 
-    //this method will display the gameover screen
-    private void gameover ()
+    public void joining ()
     {
+	//draws the black background
+	c.setColor (Color.black);
+	c.fillRect (0, 0, 500, 500);
 
+	drawPlayers ();
+
+	if (mul)
+	{
+	    AnimateEnemies a = new AnimateEnemies (c, s, p1, p2);
+	    a.start ();
+	}
+	else
+	{
+	    AnimateEnemies a = new AnimateEnemies (c, s, p1);
+	    a.start ();
+	}
     }
-
-
-    //this method will record the curretn scroe and display it on the top of the screen.
-    private void setScore ()
-    {
-
-    }
-
-
-    //this method will return the curretn score
-    public int getScore ()
-    {
-	return score;
-    }
-
-
-    //this method will ask the high scoring user fro their name
-    private void getName ()
-    {
-
-    }
-
-
-    //this method will save the highscore and the user's information to a file
-    private void saveHighscore ()
-    {
-
-    }
-    
 } // Level class
+
+

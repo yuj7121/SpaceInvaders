@@ -10,7 +10,7 @@ This class will create bomb objects that are dropped by the enemies.
 import java.awt.*;
 import hsa.Console;
 
-public class Bomb
+public class Bomb extends Thread
 {
     //variable declaration
     private Console c;          // The output console
@@ -19,13 +19,13 @@ public class Bomb
     private boolean playerHit;  //this varibale indicates wether the bomb has hit a player or not
 
     //this method will construct the bomb object
-    //The console is passes to display output
-    public Bomb (Console c, int ex, int ey)
+    //console c for parameter passing, int ex and ey for the enemie's x and y coordinates
+    public Bomb (Console c, int x, int y)
     {
+	//The parameter's console c is passed to this class's console c to display output
 	this.c = c;
-	ex = x;
-	ey = y;
-	drawBomb ();
+	this.x = x;
+	this.y = y;
 
     }
 
@@ -33,12 +33,27 @@ public class Bomb
     //this method will draw the graphics of the bomb
     private void drawBomb ()
     {
-	c.setColor (Color.yellow);
-	c.fillRect (x + 17, y, 5, 20);
+	for (int i = 0 ; i < 500 ; i++)
+	{
+	    c.setColor (Color.black);
+	    c.fillRect (x + 8, y + 16, 4, 2);
+	    c.setColor (Color.white);
+	    c.fillRect (x + 8, y + 18, 4, 20);
+	    y++;
+	    try
+	    {
+		sleep (10);
+	    }
+	    catch (Exception e)
+	    {
+	    }
+	}
+
     }
 
 
     //this method will check if the bomb has hit a player or not
+    //takes a player object as an input to
     private void setPlayerHit (Player p)
     {
 	int px = p.getPlayerX ();
@@ -46,6 +61,8 @@ public class Bomb
 	{
 	    playerHit = true;
 	}
+
+
 	else
 	{
 	    playerHit = false;
@@ -54,11 +71,17 @@ public class Bomb
 
 
     //this method wil;l return wether the bomb has hit a player or not
-    public boolean getPlayerHit ()
+    public boolean getPlayerHit (Player p)
     {
+	setPlayerHit (p);
 	return playerHit;
     }
 
 
-
+    public void run ()
+    {
+	drawBomb ();
+    }
 } // Bomb class
+
+
